@@ -740,6 +740,7 @@ class Referee extends MultiReferee {
         // ---
         // Check end conditions
         // ---
+        boolean gameOver = false;
         for (Player player : players) {
             if (player.score == 0) {
                 int production = 0;
@@ -749,9 +750,17 @@ class Referee extends MultiReferee {
                     }
                 }
                 if (production == 0) {
-                    throw new GameOverException("endReached");
+                    gameOver = true;
+                } else {
+                    // Keep playing until this player has produced some units
+                    gameOver = false;
+                    break;
                 }
             }
+        }
+
+        if (gameOver) {
+            throw new GameOverException("endReached");
         }
     }
 
